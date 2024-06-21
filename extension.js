@@ -1,6 +1,5 @@
 const vscode = require("vscode");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
 require("dotenv").config();
 
 // Retrieve the API key from environment variables

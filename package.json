@@ -33,6 +33,7 @@
     "eslint": "^8.57.0",
     "typescript": "^5.4.5"
   },
+  "icon": "./CodeAsist.jpeg",
   "dependencies": {
     "@google/generative-ai": "^0.13.0",
     "axios": "^1.7.2",
