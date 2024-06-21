@@ -4,17 +4,19 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 require("dotenv").config();
 
 // Retrieve the API key from environment variables
-const apiKey =process.env.GOOGLE_API_KEY;
-const genAI = new GoogleGenerativeAI(apiKey);
+//const apiKey = "AIzaSyAQmosKgfQN5PYxc_pA53hPfd-5_JBJHlw";
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // Function to get AI completion
 async function getCompletion(code) {
-  const prompt = `As a professional software engineer, you are a code completion assistant.
-  I want you to make suggestions and corrections based on the given code and make sure it follows the stantard procedures:
-${code}
-Please return only the corrected and suggested code.`;
+  const prompt = `As a professional software engineer, you are a code completion assistant. 
+  Please make suggestions and corrections based on the given code, ensuring it follows standard procedures. 
+  Return only the corrected and complete code, and include comments where necessary.
+  Given code:
+  ${code}
+  `;
 
   const result = await model.generateContent(prompt);
   const response = await result.response;
@@ -26,10 +28,10 @@ Please return only the corrected and suggested code.`;
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-  console.log('Congratulations, your extension "codeasistant" is now active!');
+  console.log('Congratulations, your extension "CodeAsist" is now active!');
 
   const disposable = vscode.commands.registerCommand(
-    "codeasistant.helloWorld",
+    "code.asist",
     async function () {
       // Get the active text editor
       const editor = vscode.window.activeTextEditor;
