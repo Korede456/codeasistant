@@ -1,6 +1,6 @@
 {
   "name": "codeasistant",
-  "displayName": "CodeAsist",
+  "displayName": "CodeAssist",
   "description": "An ai coding companion",
   "version": "0.0.1",
   "engines": {
@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "code.asist",
-        "title": "CodeAsist"
+        "command": "code.assist",
+        "title": "CodeAssist"
       }
     ]
   },
