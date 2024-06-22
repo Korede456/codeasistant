@@ -2,6 +2,10 @@
   "name": "codeasistant",
   "displayName": "CodeAssist",
   "description": "An ai coding companion",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Korede456/codeasistant"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.90.0"
