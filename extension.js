@@ -3,7 +3,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 require("dotenv").config();
 
-const genAI = new GoogleGenerativeAI("process.env.GOOGLE");
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -20,6 +20,15 @@ async function getCompletion(code) {
   const response = await result.response;
   const text = await response.text();
   return text;
+}
+
+// Function to remove the first and last lines of the completion text
+function removeFirstAndLastLine(text) {
+  const lines = text.trim().split("\n");
+  if (lines.length <= 2) {
+    return ""; // If there are less than 3 lines, return an empty string
+  }
+  return lines.slice(1, -1).join("\n");
 }
 
 /**
@@ -47,6 +56,7 @@ function activate(context) {
       // Fetch AI completion
       const completion = await getCompletion(code);
       if (completion) {
+        const cleanedCompletion = removeFirstAndLastLine(completion);
         const openSuggestionAction = "Open Suggestion";
         vscode.window
           .showInformationMessage(
@@ -57,7 +67,7 @@ function activate(context) {
             if (selection === openSuggestionAction) {
               const languageExtension = editor.document.languageId;
               const newDocument = await vscode.workspace.openTextDocument({
-                content: completion,
+                content: cleanedCompletion,
                 language: languageExtension,
               });
 

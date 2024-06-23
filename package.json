@@ -1,12 +1,13 @@
 {
   "name": "codeasistant",
-  "displayName": "CodeAssist",
+  "displayName": "AI CodeAssist",
   "description": "An ai coding companion",
+  "publisher": "KoredeOdeyemi",
   "repository": {
     "type": "git",
     "url": "https://github.com/Korede456/codeasistant"
   },
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.90.0"
   },
