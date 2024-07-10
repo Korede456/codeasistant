@@ -7,11 +7,11 @@ const genAI = new GoogleGenerativeAI("AIzaSyAQmosKgfQN5PYxc_pA53hPfd-5_JBJHlw");
 
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// Function to get AI completion
+// Function to get AI completion with suggestions based on runtime speed and efficiency
 async function getCompletion(code) {
   const prompt = `As a professional software engineer, you are a code completion assistant. 
   Please make suggestions and corrections based on the given code, ensuring it follows standard procedures. 
-  Return only the corrected and complete code, and include comments where necessary.
+  Evaluate the code on runtime speed and efficiency, and provide improved code suggestions.
   Given code:
   ${code}
   `;
