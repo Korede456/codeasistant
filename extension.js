@@ -14,7 +14,7 @@ async function getCompletion(code) {
     role: "user",
     parts: [
       {
-        text: `As a professional software engineer, you are a code completion assistant. Please make suggestions and corrections based on the given code, ensuring it follows standard procedures. Evaluate the code on runtime speed and efficiency, and provide improved code suggestions. Given code: ${code}`,
+        text: `As a professional software engineer, you are a code completion assistant. Please make suggestions and corrections based on the given code, ensuring it follows standard procedures. Evaluate the code on runtime speed and efficiency, and provide improved code suggestions, and also eliminate explanations (don't explain the code), only comments within the code are allowed. Given code: ${code}`,
       },
     ],
   };
@@ -77,11 +77,14 @@ function activate(context) {
       const completion = await getCompletion(code);
       if (completion) {
         const cleanedCompletion = removeFirstAndLastLine(completion);
-        const openSuggestionAction = "Open Suggestion";
+        const openSuggestionAction = "Open AI Code";
+        const pasteAction = "Paste";
+
         vscode.window
           .showInformationMessage(
             "AI completion is ready.",
-            openSuggestionAction
+            openSuggestionAction,
+            pasteAction
           )
           .then(async (selection) => {
             if (selection === openSuggestionAction) {
@@ -94,6 +97,10 @@ function activate(context) {
               await vscode.window.showTextDocument(newDocument, {
                 preview: false,
                 viewColumn: vscode.ViewColumn.Beside,
+              });
+            } else if (selection === pasteAction) {
+              editor.edit((editBuilder) => {
+                editBuilder.replace(editor.selection, cleanedCompletion);
               });
             }
           });
