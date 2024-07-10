@@ -1,24 +1,44 @@
 const vscode = require("vscode");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
 require("dotenv").config();
 
-const genAI = new GoogleGenerativeAI("AIzaSyAQmosKgfQN5PYxc_pA53hPfd-5_JBJHlw");
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+let chatHistory = [];
+
 // Function to get AI completion with suggestions based on runtime speed and efficiency
 async function getCompletion(code) {
-  const prompt = `As a professional software engineer, you are a code completion assistant. 
-  Please make suggestions and corrections based on the given code, ensuring it follows standard procedures. 
-  Evaluate the code on runtime speed and efficiency, and provide improved code suggestions.
-  Given code:
-  ${code}
-  `;
+  const userMessage = {
+    role: "user",
+    parts: [
+      {
+        text: `As a professional software engineer, you are a code completion assistant. Please make suggestions and corrections based on the given code, ensuring it follows standard procedures. Evaluate the code on runtime speed and efficiency, and provide improved code suggestions. Given code: ${code}`,
+      },
+    ],
+  };
 
-  const result = await model.generateContent(prompt);
+  chatHistory.push(userMessage);
+
+  const chat = model.startChat({
+    history: chatHistory,
+    generationConfig: {
+      maxOutputTokens: 500,
+    },
+  });
+
+  const result = await chat.sendMessageStream(userMessage.parts[0].text);
   const response = await result.response;
   const text = await response.text();
+
+  const modelMessage = {
+    role: "model",
+    parts: [{ text }],
+  };
+
+  chatHistory.push(modelMessage);
+
   return text;
 }
 
